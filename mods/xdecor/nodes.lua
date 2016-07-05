@@ -1,6 +1,7 @@
 screwdriver = screwdriver or {}
 
 function xdecor.register_pane(name, desc, def)
+	--[[
 	xpanes.register_pane(name, {
 		description = desc,
 		tiles = {"xdecor_"..name..".png"},
@@ -13,6 +14,7 @@ function xdecor.register_pane(name, desc, def)
 		sounds = def.sounds or default.node_sound_defaults(),
 		recipe = def.recipe
 	})
+	--]]
 end
 
 xdecor.register_pane("bamboo_frame", "Bamboo Frame", {
@@ -487,4 +489,3 @@ xdecor.register("woodframed_glass", {
 	groups = {cracky=2, oddly_breakable_by_hand=1},
 	sounds = default.node_sound_glass_defaults()
 })
-
