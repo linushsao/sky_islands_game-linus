@@ -1342,6 +1342,7 @@ minetest.register_node("default:lava_flowing", {
 -- Tools / "Advanced" crafting / Non-"natural"
 --
 
+--
 minetest.register_node("default:torch", {
 	description = "Torch",
 	drawtype = "torchlike",
@@ -1392,6 +1393,7 @@ minetest.register_node("default:torch", {
 	legacy_wallmounted = true,
 	sounds = default.node_sound_defaults(),
 })
+--]]
 
 
 local chest_formspec =
@@ -1836,4 +1838,25 @@ minetest.register_node("default:nyancat_rainbow", {
 	groups = {cracky = 2},
 	is_ground_content = false,
 	sounds = default.node_sound_defaults(),
+})
+
+--borrow from game HADES
+
+minetest.register_node("default:lamp_wall", {
+    description = "Wall Lamp",
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"default_lamp.png"},
+	sunlight_propagates = true,
+	light_source = 13,
+	walkable = false,
+	groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.1875, -0.1875, 0.375, 0.1875, 0.1875, 0.5},
+		}
+	},
+--	sounds = default.node_sound_glass_defaults(),
 })

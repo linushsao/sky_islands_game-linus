@@ -22,8 +22,8 @@ skyblock.levels[level].feats = {}
 -- init level
 skyblock.levels[level].init = function(player_name)
 	local privs = core.get_player_privs(player_name)
-	privs['fly'] = false
-	privs['fast'] = false
+	privs['fly'] = nil
+	privs['fast'] = nil
 	core.set_player_privs(player_name, privs)
 	minetest.chat_send_player(player_name, 'You can now use Magic Carpet for FLY!')
 end

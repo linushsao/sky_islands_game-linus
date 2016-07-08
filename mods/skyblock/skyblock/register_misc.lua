@@ -75,12 +75,16 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 
 	-- add cloud floor
-	local cloud_y = skyblock.world_bottom-2
-	if minp.y<=cloud_y and maxp.y>=cloud_y then 
-		local id_cloud = minetest.get_content_id('default:cloud')
+
+	local cloud_y = skyblock.world_bottom+2
+	if minp.y<=cloud_y and maxp.y>=cloud_y then
+--		local id_cloud = minetest.get_content_id('default:cloud')
+		local id_cloud = minetest.get_content_id('default:water_source')
 		for x=minp.x,maxp.x do
 			for z=minp.z,maxp.z do
+				for a=1,5 do
 				data[area:index(x,cloud_y,z)] = id_cloud
+				end
 			end
 		end
 	end
@@ -98,7 +102,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			end
 		end
 	end
-	
+
 	-- add starting blocks
 	--[[
 	local start_pos_list = skyblock.get_start_positions_in_mapchunk(minp, maxp)
@@ -112,7 +116,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	vm:calc_lighting(emin,emax)
 	vm:write_to_map(data)
 	vm:update_liquids()
-end) 
+end)
 
 
 -- no placing low nodes

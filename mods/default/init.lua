@@ -34,6 +34,10 @@ default.gui_survival_form = "size[8,8.5]"..
 			"listring[current_player;craft]"..
 			default.get_hotbar_bg(0,4.25)
 
+-- for covering old version item
+
+dofile(minetest.get_modpath("linus_added").."/init.lua")
+
 -- Load files
 dofile(minetest.get_modpath("default").."/functions.lua")
 dofile(minetest.get_modpath("default").."/nodes.lua")

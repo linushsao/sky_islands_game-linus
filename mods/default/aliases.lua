@@ -31,7 +31,7 @@ minetest.register_alias("water_flowing", "default:water_flowing")
 minetest.register_alias("water_source", "default:water_source")
 minetest.register_alias("lava_flowing", "default:lava_flowing")
 minetest.register_alias("lava_source", "default:lava_source")
-minetest.register_alias("torch", "default:torch")
+--minetest.register_alias("torch", "default:torch")
 minetest.register_alias("sign_wall", "default:sign_wall_wood")
 minetest.register_alias("furnace", "default:furnace")
 minetest.register_alias("chest", "default:chest")
@@ -77,4 +77,3 @@ minetest.register_alias("default:pinewood", "default:pine_wood")
 
 minetest.register_alias("default:ladder", "default:ladder_wood")
 minetest.register_alias("default:sign_wall", "default:sign_wall_wood")
-
