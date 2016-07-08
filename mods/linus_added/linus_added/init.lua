@@ -5,7 +5,7 @@ minetest.register_alias("default:cloud", "default:water_source")
 minetest.register_abm({
 	nodenames = {"default:cloud"},
 --	neighbors = {"group:water"},
-	interval = 1,
+	interval = 10,
 	chance = 1,
 	catch_up = false,
 	action = function(pos, node)
