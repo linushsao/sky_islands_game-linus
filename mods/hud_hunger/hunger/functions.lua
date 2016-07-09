@@ -20,7 +20,7 @@ end
 function hunger.save(player)
 	local inv = player:get_inventory()
 	local name = player:get_player_name()
-	local value = hunger[name].lvl
+	local value = hunger.players[name].lvl
 	if not inv or not value then
 		return nil
 	end
@@ -40,17 +40,17 @@ function hunger.update_hunger(player, new_lvl)
 		return false
 	end
 	if minetest.setting_getbool("enable_damage") == false then
-		hunger[name] = 20
+		hunger.players[name] = 20
 		return
 	end
-	local lvl = hunger[name].lvl
+	local lvl = hunger.players[name].lvl
 	if new_lvl then
 		 lvl = new_lvl
 	end
 	if lvl > HUNGER_MAX then
 		lvl = HUNGER_MAX
 	end
-	hunger[name].lvl = lvl
+	hunger.players[name].lvl = lvl
 	if lvl > 20 then
 		lvl = 20
 	end
@@ -65,9 +65,13 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 		return
 	end
 	local name = player:get_player_name()
-	local exhaus = hunger[name].exhaus
+	if not name or not hunger.players[name] then
+		return
+	end
+
+	local exhaus = hunger.players[name].exhaus
 	if not exhaus then
-		hunger[name].exhaus = 0
+		hunger.players[name].exhaus = 0
 		--return
 	end
 
@@ -87,21 +91,22 @@ function hunger.handle_node_actions(pos, oldnode, player, ext)
 
 	if exhaus > HUNGER_EXHAUST_LVL then
 		exhaus = 0
-		local h = tonumber(hunger[name].lvl)
+		local h = tonumber(hunger.players[name].lvl)
 		if h > 0 then
 			update_hunger(player, h - 1)
 		end
 	end
 
-	hunger[name].exhaus = exhaus
+	hunger.players[name].exhaus = exhaus
 end
 
+
 -- Time based hunger functions
-if minetest.setting_getbool("enable_damage") then
-    local hunger_timer = 0
-    local health_timer = 0
-    local action_timer = 0
-    minetest.register_globalstep(function(dtime)
+local hunger_timer = 0
+local health_timer = 0
+local action_timer = 0
+
+local function hunger_globaltimer(dtime)
 	hunger_timer = hunger_timer + dtime
 	health_timer = health_timer + dtime
 	action_timer = action_timer + dtime
@@ -121,7 +126,7 @@ if minetest.setting_getbool("enable_damage") then
 	if hunger_timer > HUNGER_TICK then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-			local tab = hunger[name]
+			local tab = hunger.players[name]
 			if tab then
 				local hunger = tab.lvl
 				if hunger > 0 then
@@ -136,13 +141,13 @@ if minetest.setting_getbool("enable_damage") then
 	if health_timer > HUNGER_HEALTH_TICK then
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-			local tab = hunger[name]
+			local tab = hunger.players[name]
 			if tab then
 				local air = player:get_breath() or 0
 				local hp = player:get_hp()
 
-				-- heal player by 1 hp if not dead and saturation is > 15 (of 30)
-				if tonumber(tab.lvl) > HUNGER_HEAL_LVL and air > 0 then
+				-- heal player by 1 hp if not dead and saturation is > 15 (of 30) player is not drowning
+				if tonumber(tab.lvl) > HUNGER_HEAL_LVL and hp > 0 and air > 0 then
 					player:set_hp(hp + HUNGER_HEAL)
 				end
 
@@ -155,7 +160,10 @@ if minetest.setting_getbool("enable_damage") then
 
 		health_timer = 0
 	end
-    end)
+end
+
+if minetest.setting_getbool("enable_damage") then
+	minetest.register_globalstep(hunger_globaltimer)
 end
 
 
@@ -166,9 +174,9 @@ function hunger.register_food(name, hunger_change, replace_with_item, poisen, he
 	food[name] = {}
 	food[name].saturation = hunger_change	-- hunger points added
 	food[name].replace = replace_with_item	-- what item is given back after eating
-	food[name].poisen = poisen		-- time its poisening
-	food[name].healing = heal		-- amount of HP
-	food[name].sound = sound		-- special sound that is played when eating
+	food[name].poisen = poisen				-- time its poisening
+	food[name].healing = heal				-- amount of HP
+	food[name].sound = sound				-- special sound that is played when eating
 end
 
 -- Poison player
@@ -185,11 +193,29 @@ local function poisenp(tick, time, time_left, player)
 	end
 end
 
+-- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
+local org_eat = core.do_item_eat
+core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	local old_itemstack = itemstack
+	itemstack = hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	for _, callback in pairs(core.registered_on_item_eats) do
+		local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
+		if result then
+			return result
+		end
+	end
+	return itemstack
+end
+
 function hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	local item = itemstack:get_name()
 	local def = food[item]
 	if not def then
 		def = {}
+		if type(hp_change) ~= "number" then
+			hp_change = 1
+			core.log("error", "Wrong on_use() definition for item '" .. item .. "'")
+		end
 		def.saturation = hp_change * 1.3
 		def.replace = replace_with_item
 	end
@@ -201,7 +227,10 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
     return function(itemstack, user, pointed_thing)
 	if itemstack:take_item() ~= nil and user ~= nil then
 		local name = user:get_player_name()
-		local sat = tonumber(hunger[name].lvl)
+		if not hunger.players[name] then
+			return itemstack
+		end
+		local sat = tonumber(hunger.players[name].lvl or 0)
 		local hp = user:get_hp()
 		-- Saturation
 		if sat < HUNGER_MAX and hunger_change then
@@ -228,7 +257,20 @@ function hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
 		end
 		minetest.sound_play(sound, {to_player = name, gain = 0.7})
 
-		itemstack:add_item(replace_with_item)
+		if replace_with_item then
+			if itemstack:is_empty() then
+				itemstack:add_item(replace_with_item)
+			else
+				local inv = user:get_inventory()
+				if inv:room_for_item("main", {name=replace_with_item}) then
+					inv:add_item("main", replace_with_item)
+				else
+					local pos = user:getpos()
+					pos.y = math.floor(pos.y + 0.5)
+					core.add_item(pos, replace_with_item)
+				end
+			end
+		end
 	end
 
 	return itemstack

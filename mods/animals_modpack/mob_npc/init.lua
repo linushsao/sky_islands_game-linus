@@ -246,6 +246,4 @@ mobf_add_mob(npc_prototype)
 minetest.log("action","MOD: mob_npc mod                version " .. version .. " loaded")
 
 --linus added
-dofile (modpath .. "/npc_wasteland.lua")
 dofile (modpath .. "/npc_skyisland.lua")
-dofile (modpath .. "/npc_LOTR.lua")

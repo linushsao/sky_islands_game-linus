@@ -1,1 +1,1 @@
-inventory_plus
+inventory_plus_linus
