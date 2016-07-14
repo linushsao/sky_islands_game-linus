@@ -1602,7 +1602,7 @@ minetest.register_node("default:bookshelf", {
 
 local function register_sign(material, desc, def)
 	minetest.register_node("default:sign_wall_" .. material, {
-		description = desc .. " Sign",
+		description = desc .. " Sign".. material,
 		drawtype = "nodebox",
 		tiles = {"default_sign_wall_" .. material .. ".png"},
 		inventory_image = "default_sign_" .. material .. ".png",

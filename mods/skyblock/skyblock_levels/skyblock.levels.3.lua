@@ -64,7 +64,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:bookshelf',
 		feat = 'place_bookshelf',
 		count = 4,
-		reward = 'wool:red 50',
+		reward = 'linus_crafting:iron_sand 40',
 		placenode = {'default:bookshelf'},
 	},
 	{
@@ -80,7 +80,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:sand',
 		feat = 'place_sand',
 		count = 50,
-		reward = 'wool:green 50',
+		reward = 'linus_crafting:copper_sand 4',
 		placenode = {'default:sand'},
 	},
 	{
@@ -88,7 +88,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:stone_with_copper',
 		feat = 'dig_stone_with_copper',
 		count = 4,
-		reward = 'wool:orange 50',
+		reward = 'linus_crafting:iron_sand 8',
 		dignode = {'default:stone_with_copper'},
 	},
 	{
@@ -96,7 +96,7 @@ skyblock.levels[level].feats = {
 		hint = 'xpanes:bar',
 		feat = 'place_bar',
 		count = 8,
-		reward = 'default:mese_crystal',
+		reward = 'linus_crafting:mese_sand 4',
 		placenode = {'xpanes:bar'},
 	},
 	{
@@ -104,7 +104,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:stone_with_mese',
 		feat = 'dig_stone_with_mese',
 		count = 4,
-		reward = 'default:gold_lump',
+		reward = 'default:diamond',
 		dignode = {'default:stone_with_mese'},
 	},
 	{

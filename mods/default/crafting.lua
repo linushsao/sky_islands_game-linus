@@ -75,17 +75,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'default:sign_wall_wood 3',
-	recipe = {
-		{'default:wood', 'default:wood', 'default:wood'},
-		{'default:wood', 'default:wood', 'default:wood'},
-		{'', 'group:stick', ''},
-	}
-})
 
-
---[[
 minetest.register_craft({
 	output = 'default:torch 4',
 	recipe = {
@@ -93,7 +83,7 @@ minetest.register_craft({
 		{'group:stick'},
 	}
 })
---]]
+
 
 minetest.register_craft({
 	output = 'default:pick_wood',

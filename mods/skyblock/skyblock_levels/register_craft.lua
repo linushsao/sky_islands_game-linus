@@ -28,13 +28,15 @@ minetest.register_craft({
 })
 
 -- stone_with_coal
+--[[
 minetest.register_craft({
 	output = 'default:stone_with_coal 2',
 	recipe = {
-		{'default:coal_lump'},
+		{'linus_crafting:burned_wood'},
 		{'default:stone'},
 	}
 })
+
 
 -- stone_with_iron
 minetest.register_craft({
@@ -44,7 +46,9 @@ minetest.register_craft({
 		{'default:stone'},
 	}
 })
+--]]
 
+--[[
 -- stone_with_copper
 minetest.register_craft({
 	output = 'default:stone_with_copper 2',
@@ -53,6 +57,7 @@ minetest.register_craft({
 		{'default:stone'},
 	}
 })
+--]]
 
 -- stone_with_gold
 minetest.register_craft({
@@ -63,7 +68,7 @@ minetest.register_craft({
 	}
 })
 
--- stone_with_mese
+--[[stone_with_mese
 minetest.register_craft({
 	output = 'default:stone_with_mese 2',
 	recipe = {
@@ -71,8 +76,9 @@ minetest.register_craft({
 		{'default:stone'},
 	}
 })
+--]]
 
--- stone_with_diamond
+--[[ stone_with_diamond
 minetest.register_craft({
 	output = 'default:stone_with_diamond 2',
 	recipe = {
@@ -80,8 +86,9 @@ minetest.register_craft({
 		{'default:stone'},
 	}
 })
+--]]
 
--- obsidian
+
 minetest.register_craft({
 	output = 'default:obsidian 2',
 	recipe = {
@@ -89,6 +96,7 @@ minetest.register_craft({
 		{'default:stone'},
 	}
 })
+
 
 -- sand
 minetest.register_craft({

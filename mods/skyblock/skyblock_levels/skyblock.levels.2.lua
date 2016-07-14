@@ -82,7 +82,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:cobble',
 		feat = 'place_cobble',
 		count = 100,
-		reward = 'default:coal_lump',
+		reward = 'linus_crafting:burned_wood 2',
 		placenode = {'default:cobble'},
 	},
 	{
@@ -98,7 +98,7 @@ skyblock.levels[level].feats = {
 		hint = 'default:torch',
 		feat = 'place_torch',
 		count = 8,
-		reward = 'default:iron_lump',
+		reward = 'linus_crafting:iron_sand 3',
 		placenode = {'default:torch'},
 	},
 	{
