@@ -1,8 +1,13 @@
 -- for covering old version item
 
---[[
-minetest.register_alias("default:cloud", "default:water_source")
 
+minetest.register_alias("default:cloud", "air")
+minetest.register_alias("default:water_source", "air")
+minetest.register_alias("default:water_flowing", "air")
+
+
+
+--[[
 minetest.register_abm({
 	nodenames = {"default:cloud"},
 --	neighbors = {"group:water"},
