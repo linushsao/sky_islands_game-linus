@@ -1,5 +1,6 @@
 -- for covering old version item
 
+--[[
 minetest.register_alias("default:cloud", "default:water_source")
 
 minetest.register_abm({
@@ -12,3 +13,4 @@ minetest.register_abm({
 		minetest.set_node(pos, {name = "default:water_source"})
 	end
 })
+--]]

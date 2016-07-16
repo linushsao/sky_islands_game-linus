@@ -76,18 +76,15 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 	-- add cloud floor
 
-	local cloud_y = skyblock.world_bottom+2
+	local cloud_y = skyblock.world_bottom-2
 	if minp.y<=cloud_y and maxp.y>=cloud_y then
---		local id_cloud = minetest.get_content_id('default:cloud')
 		local id_cloud = minetest.get_content_id('default:water_source')
 		for x=minp.x,maxp.x do
 			for z=minp.z,maxp.z do
-				for a=1,5 do
 				data[area:index(x,cloud_y,z)] = id_cloud
-				end
 			end
 		end
-	end
+end
 
 	-- add world_bottom_node
 	if skyblock.world_bottom_node ~= 'air' then
